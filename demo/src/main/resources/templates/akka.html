@@ -1,87 +1,78 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <style>
-        /* style pour le titre principal */
-        h2 {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
 
-        /* style pour le titre secondaire */
-        h3 {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        /* style pour le texte */
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-        /* style pour le bouton */
-        button {
-            background-color: #007bff;
-            border: none;
-            color: #fff;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-
-        /* style pour les formulaires */
-        form {
-            margin-bottom: 20px;
-        }
-
-        /* style pour les champs de texte */
-        input[type="text"],
-        input[type="file"] {
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 200px;
-        }
-
-        /* style pour les divs de résultat */
-        div {
-            margin-top: 10px;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        /* style pour la ligne horizontale */
-        hr {
-            border: none;
-            border-top: 1px solid #ccc;
-            margin: 20px 0;
-        }
-    </style>
-
+    <title>Home</title>
 </head>
 
 <body>
-    <h2> TP3 AKKA </h2>
-    <hr>
-    <button th:href="@{akka}">Actualiser la page </button>
-    <h3> Initialisation des acteurs Akka </h3>
-    <form method="post" th:action="@{init}">
-        <button type="submit"> Initialiser </button>
-    </form>
-    <hr>
-    <h3>Fichier a analyser </h3>
-    <hr>
-    <h2> Résultat </h2>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+        }
+
+
+
+
+        #main {
+            position: relative;
+            top: 155px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #tables-list {
+            width: 70%;
+        }
+
+        .add-sheet {
+            width: 200px;
+            ;
+        }
+
+        .seventy {
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 0 30px 0;
+        }
+
+        .addNew {
+            align-self: start;
+        }
+    </style>
+
+    <div>
+
+        <li><a class="linkNoStyle" href="/akka/reset"> Reset</a> </li>
+        <li class="menu-item"><a class="linkNoStyle" href="/akka/home"> Reload</a> </li>
+
+
+        <div id="main">
+
+            <h5>Initialization</h5>
+
+            <a href="/akka/start"> Initialize</a>
+
+        </div>
+    </div>
+
 
 </body>
 
