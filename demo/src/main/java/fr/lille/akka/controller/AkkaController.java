@@ -22,16 +22,13 @@ import java.util.List;
 
 
 @Controller
+@RequestMapping("akka")
 public class AkkaController {
     List<String> save;
     @Autowired
     private AkkaService akkaService;
 
-    @GetMapping("/akka")
-    public String akka(Model model) {
-        return "akka";
-        //à continuer
-    }
+   
 
     @PostMapping("/init")
     public String init() {
@@ -39,6 +36,25 @@ public class AkkaController {
         System.out.println("initialisation de Akka ");
         return "redirect:/akka";
     }
+
+    @GetMapping("/start")
+	public String initApi( Model model, HttpSession session) {
+		 
+			
+		 
+		return "home";	
+	}
+	@GetMapping("/reset")
+	public String resetApi( Model model, HttpSession session) {
+		 
+		return "home";
+	}
+	
+	@GetMapping("/home")
+	public String welcome(Model model) {
+		 
+		return "home";
+	}
 }
 
 
