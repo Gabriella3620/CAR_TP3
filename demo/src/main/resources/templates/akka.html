@@ -72,6 +72,14 @@
 
         </div>
 
+        <div>
+            <h5>Ajouter fichier</h5>
+
+            <form action="/akka/dispatch" method="POST" enctype="multipart/form-data">
+                <input type="file" name="file" accept=".txt,.csv">
+                <button type="submit" th:disabled="${disabled_dispatch}">Charger fichier</button>
+            </form>
+        </div>
 
     </div>
 
