@@ -1,59 +1,52 @@
-package fr.lille.akka.controllers;
+package fr.lille.akka.controller;
 
-import akka.actor.ActorRef;
-import akka.util.Timeout;
+import java.io.File;
+import java.io.IOException;
 
-import akka.message.*;
-
-import akka.actors.MapperActor;
-import akka.actors.ReducerActor;
-import akka.akkaService.*;
+import fr.lille.akka.model.Mot;
+import fr.lille.akka.akkaService.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import scala.concurrent.duration.Duration;
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
-
-
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("akka")
 public class AkkaController {
-    List<String> save;
-    @Autowired
-    private AkkaService akkaService;
 
-   
+	@Autowired
+	private AkkaService akkaService;
 
-    @PostMapping("/init")
-    public String init() {
-        AkkaService.initialize();
-        System.out.println("initialisation de Akka ");
-        return "redirect:/akka";
-    }
-
-    @GetMapping("/start")
-	public String initApi( Model model, HttpSession session) {
-		 
-			
-		 
-		return "home";	
+	@GetMapping("/start")
+	public String initApi(Model model, HttpSession session) {
+		if (session.getAttribute("init") == null) {
+			akkaService.initialize();
+			session.setAttribute("init", true);
+		}
+		model.addAttribute("dispatched", akkaService.isDispatched());
+		return "akka";
 	}
+
 	@GetMapping("/reset")
-	public String resetApi( Model model, HttpSession session) {
-		 
-		return "home";
+	public String resetApi(Model model, HttpSession session) {
+		akkaService.clean();
+		session.invalidate();
+		model.addAttribute("dispatched", akkaService.isDispatched());
+		return "akka";
 	}
-	
+
 	@GetMapping("/home")
 	public String welcome(Model model) {
-		 
-		return "home";
+		model.addAttribute("dispatched", akkaService.isDispatched());
+		return "akka";
 	}
 
 	@PostMapping(value = "/dispatch", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -62,41 +55,16 @@ public class AkkaController {
 		akkaService.setReader(file);
 		akkaService.dispatchLinesToMapper();
 		model.addAttribute("dispatched", akkaService.isDispatched());
-		return "home";
+		return "akka";
 	}
 
-	public void dispatchLinesToMapper() throws IOException {
-		 
-		 
-		String text;
-		MapReduceMessage mapReduceMessage ;
-		int i = 1;
-		while( (text = bReader.readLine() ) != null) {
-			mapReduceMessage = new MapReduceMessage(reducers, text);
-			
-			switch(i) {
-				case 1:
-					this.mapper1.tell(mapReduceMessage, ActorRef.noSender());
-					break;
-				case 2:
-					this.mapper2.tell(mapReduceMessage, ActorRef.noSender());
-					break;
-				case 3:
-					this.mapper3.tell(mapReduceMessage, ActorRef.noSender()); 
-					break;
-				default:
-					break;
-			}
-			
-			i = i==3 ? 1 : i+1;
-		}
-	   
-		bReader.close();
-		this.dispatched=true;
-	   
-   }
+	@PostMapping(path = "/search", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public String searchWord(Mot mot, Model model) throws Exception {
+		int nb = akkaService.getOccurrenceCount(mot.contenu());
+		model.addAttribute("nb", nb);
+		model.addAttribute("mot", mot.contenu());
+		model.addAttribute("dispatched", akkaService.isDispatched());
+		return "akka";
+	}
 
 }
-
-
- //à continuer

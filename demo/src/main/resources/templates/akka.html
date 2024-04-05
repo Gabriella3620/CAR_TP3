@@ -81,6 +81,20 @@
             </form>
         </div>
 
+        <div class="card-body">
+            <h5>Mot à compter</h5>
+            <form action="/akka/search" method="POST">
+                <div>
+                    <input type="text" name="contenu" placeholder="Recherche" th:value="${word}" required>
+                </div>
+                <button type="submit">Lancer</button>
+            </form>
+            <div>
+                <span id="result" th:text="${nb}"></span> fois.
+            </div>
+            <br />
+        </div>
+
     </div>
 
 
